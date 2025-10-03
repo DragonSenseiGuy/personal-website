@@ -1,0 +1,11 @@
+title: "DragonOS"
+description: "DragonOS"
+url: "https://dragonsenseiguy.github.io/personal-website/"
+author: "Dragon"
+github_username: "dragonsenseiguy"
+# Use plain static HTML/CSS without a Jekyll theme
+theme: null
+plugins: []
+# Keep README out of the built site
+exclude:
+  - README.md
