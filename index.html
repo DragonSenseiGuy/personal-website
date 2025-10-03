@@ -424,16 +424,12 @@
                                 files.push(path);
                             }
 
-                            // Sort by ISO timestamp prefix descending (newest first)
-                            files.sort(function (a, b) {
-                                var an = decodeURIComponent(a.split("/").pop());
-                                var bn = decodeURIComponent(b.split("/").pop());
-                                var adMatch = an.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?\+00:00)/);
-                                var bdMatch = bn.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?\+00:00)/);
-                                var ad = adMatch ? adMatch[1] : "";
-                                var bd = bdMatch ? bdMatch[1] : "";
-                                return ad < bd ? 1 : (ad > bd ? -1 : 0);
-                            });
+                            // Sort alphabetically by filename (case-insensitive)
+                                                        files.sort(function (a, b) {
+                                                            var an = decodeURIComponent(a.split("/").pop()).toLowerCase();
+                                                            var bn = decodeURIComponent(b.split("/").pop()).toLowerCase();
+                                                            return an.localeCompare(bn);
+                                                        });
 
                             if (files.length === 0) {
                                 if (blogStatus) blogStatus.textContent = "No posts found. Ensure directory listing is enabled or open a post directly.";
@@ -444,10 +440,8 @@
                             files.forEach(function (path) {
                                 var name = path.split("/").pop();
                                 var decodedName = decodeURIComponent(name);
-                                // Extract only the part after the ISO-8601 UTC timestamp prefix
-                                var titleMatch = decodedName.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?\+00:00\s+(.*)$/);
-                                var titleRaw = titleMatch ? titleMatch[1] : decodedName.replace(/^[^ ]+\s+/, "");
-                                var title = titleRaw.replace(/\.md$/i, "").replace(/_/g, " ").trim();
+                                // Show only the filename (no directory), ignoring timestamps entirely
+                                var title = decodedName.replace(/\.md$/i, "").trim();
                                 var item = document.createElement("button");
                                 item.type = "button";
                                 item.style.cssText = "text-align:left;padding:6px 8px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:#fff;cursor:pointer;";
