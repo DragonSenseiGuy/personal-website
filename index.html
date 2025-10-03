@@ -1,0 +1,516 @@
+<!doctype html>
+<html>
+    <head>
+        <!--Roboto Font-->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet"
+        />
+        <!--SUSU Mono Font-->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=SUSE+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+            rel="stylesheet"
+        />
+        <!--Custom CSS-->
+        <link rel="stylesheet" href="static/css/index.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+        <script>if (window.hljs) { window.hljs.configure({ ignoreUnescapedHTML: true }); }</script>
+        <style>
+          /* Markdown content styles */
+          #blogContent { box-sizing: border-box; }
+          #blogArticle { color: #222; line-height: 1.6; word-wrap: break-word; }
+          #blogArticle h1, #blogArticle h2, #blogArticle h3, #blogArticle h4, #blogArticle h5, #blogArticle h6 { font-family: "Roboto", sans-serif; font-weight: 600; margin: 1.2em 0 .6em; line-height: 1.25; }
+          #blogArticle h1 { font-size: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: .3em; }
+          #blogArticle h2 { font-size: 1.6rem; border-bottom: 1px solid #e5e7eb; padding-bottom: .25em; }
+          #blogArticle h3 { font-size: 1.3rem; }
+          #blogArticle p { margin: .75em 0; }
+          #blogArticle a { color: #0e6ba8; text-decoration: none; }
+          #blogArticle a:hover { text-decoration: underline; }
+          #blogArticle code { background: #f6f8fa; padding: .1em .3em; border-radius: 4px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.95em; }
+          #blogArticle pre { background: #f6f8fa; padding: 12px; border-radius: 8px; overflow: auto; }
+          #blogArticle pre code { background: transparent; padding: 0; }
+          #blogArticle blockquote { border-left: 4px solid #e5e7eb; margin: 1em 0; padding: .5em 1em; color: #555; background: #fafafa; border-radius: 4px; }
+          #blogArticle ul, #blogArticle ol { margin: .6em 0 .6em 1.5em; }
+          #blogArticle li { margin: .25em 0; }
+          #blogArticle hr { border: 0; border-top: 1px solid #e5e7eb; margin: 1.5em 0; }
+          #blogArticle table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+          #blogArticle th, #blogArticle td { border: 1px solid #e5e7eb; padding: 8px 10px; text-align: left; }
+          #blogArticle thead th { background: #f3f4f6; }
+          #blogArticle img { max-width: 100%; height: auto; }
+          #blogArticle kbd { background: #f6f8fa; border: 1px solid #d0d7de; border-bottom-color: #b9c0c8; border-radius: 6px; padding: 2px 4px; font-size: .9em; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+          #blogArticle sup, #blogArticle sub { font-size: .8em; }
+          #blogArticle .task-list-item { list-style: none; }
+          #blogArticle .task-list-item input[type="checkbox"] { margin-right: .5em; }
+          /* Resize handle for windows */
+          .resize-handle { position: absolute; width: 14px; height: 14px; right: 6px; bottom: 6px; cursor: se-resize; background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.06) 100%); border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08); }
+        </style>
+    </head>
+    <body>
+        <div class="top-bar">
+            <p
+                style="margin-left: 16px"
+                class="roboto"
+                style="cursor: pointer"
+                id="welcomeopen"
+            >
+                DragonOS
+
+            </p>
+            <p style="margin-right: 16px" class="roboto" id="timeElement"></p>
+        </div>
+        <div style="padding-top: 150px; padding-left: 35px">
+            <div
+                style="
+                    display: flex;
+                    gap: 20px;
+                    text-align: center;
+                    padding: 16px;
+                    filter: drop-shadow(0 0 8px #dab6c4 );
+                    width: fit-content;
+                "
+            >
+                <div style="text-align: center">
+                    <img id="blogopen"
+                        src="static/images/BlogIcon.png"
+                        alt="Blog Icon"
+                        style="width: 64px; height: 64px; border-radius: 16px; cursor: pointer"
+                    />
+                    <p style="margin: 5px; color: #fff">Blog</p>
+                </div>
+                <div style="text-align: center; position: absolute; top: var(--tutorial-app-top, 200px); left: var(--tutorial-app-left, 140px);">
+                    <img id="tutorialopen"
+                        src="static/images/BlogIcon.png"
+                        alt="Tutorial Icon"
+                        style="width: 64px; height: 64px; border-radius: 16px; cursor: pointer"
+                    />
+                    <p style="margin: 5px; color: #fff">Tutorial.md</p>
+                </div>
+            </div>
+        </div>
+        <div class="intro-div" id="welcome">
+            <div id="welcomeheader">
+                <div class="win-controls">
+                    <div id="welcomeminimize" class="win-btn minimize" title="Minimize"></div>
+                    <div id="welcomefullscreen" class="win-btn fullscreen" title="Fullscreen"></div>
+                    <div id="welcomeclose" class="win-btn close" title="Close"></div>
+                </div>
+            </div>
+            <main tabindex="0" style="flex: 1; overflow: auto; background: #fff; border-radius: 12px; padding: 16px; min-width: 0;">
+                <img src="static/images/Dragon.png" alt="Dragon" id="DragonImage" />
+                <h1 class="roboto">DragonOS</h1>
+                <p class="suse-mono">
+                    Welcome to DragonOS, my personal website! This is where I share
+                    my thoughts, projects, and experiences.
+                </p>
+            </main>
+            <div class="resize-handle" title="Resize"></div>
+        </div>
+        <div class="intro-div" id="blog" style="display: none; overflow: hidden;">
+            <div id="blogheader">
+                <div class="win-controls">
+                    <div id="blogminimize" class="win-btn minimize" title="Minimize"></div>
+                    <div id="blogfullscreen" class="win-btn fullscreen" title="Fullscreen"></div>
+                    <div id="blogclose" class="win-btn close" title="Close"></div>
+                </div>
+            </div>
+            <div id="blogApp" class="suse-mono" style="display: flex; gap: 12px; width: 100%; min-width: 0; margin-top: 8px;">
+                <aside id="blogList" style="width: 280px; overflow: auto; background: #fff; border-radius: 12px; padding: 8px;">
+                    <h2 class="roboto" style="margin: 8px 8px 4px;">Posts</h2>
+                    <div id="blogListItems" style="display: flex; flex-direction: column; gap: 6px;"></div>
+                    <div id="blogListStatus" style="font-size: 12px; color: #666; margin-top: 8px;">
+                        Looking for posts in /blogs/...
+                    </div>
+                </aside>
+                <main id="blogContent" tabindex="0" style="flex: 1; overflow: auto; background: #fff; border-radius: 12px; padding: 16px; min-width: 0;">
+                    <div id="blogArticle">Select a post from the list.</div>
+                </main>
+            </div>
+            <div class="resize-handle" title="Resize"></div>
+        </div>
+        <div class="intro-div" id="tutorial" style="display: none; overflow: hidden;">
+            <div id="tutorialheader">
+                <div class="win-controls">
+                    <div id="tutorialminimize" class="win-btn minimize" title="Minimize"></div>
+                    <div id="tutorialfullscreen" class="win-btn fullscreen" title="Fullscreen"></div>
+                    <div id="tutorialclose" class="win-btn close" title="Close"></div>
+                </div>
+            </div>
+            <main id="tutorialContent" tabindex="0" style="flex: 1; overflow: auto; background: #fff; border-radius: 12px; padding: 16px; min-width: 0;">
+                <h1 class="roboto" style="margin-top: 0;">Tutorial.md</h1>
+                <div id="tutorialArticle">Loading Tutorial...</div>
+            </main>
+            <div class="resize-handle" title="Resize"></div>
+        </div>
+        <script src="static/js/index.js"></script>
+        <script>
+            (function () {
+                var blog = document.querySelector("#blog");
+                var blogOpen = document.querySelector("#blogopen");
+                var blogClose = document.querySelector("#blogclose");
+                var tutorial = document.querySelector("#tutorial");
+                var tutorialOpen = document.querySelector("#tutorialopen");
+                var tutorialClose = document.querySelector("#tutorialclose");
+
+                // z-index management (shared counter on window to coordinate stacking)
+                window._zCounter = window._zCounter || 10;
+                function bringToFront(el) {
+                    if (!el) return;
+                    window._zCounter += 1;
+                    el.style.zIndex = String(window._zCounter);
+                }
+
+                function makeDraggable(elmnt) {
+                    if (!elmnt) return;
+                    var header = document.getElementById(elmnt.id + "header");
+                    var dragHandle = header || elmnt;
+                    var startX = 0, startY = 0, startMouseX = 0, startMouseY = 0;
+
+                    dragHandle.addEventListener("mousedown", function (e) {
+                        if (e.button !== 0) return;
+                        e.preventDefault();
+                        bringToFront(elmnt);
+
+                        if (!elmnt.style.top && !elmnt.style.left) {
+                            var rect = elmnt.getBoundingClientRect();
+                            var docTop = rect.top + window.scrollY;
+                            var docLeft = rect.left + window.scrollX;
+                            elmnt.style.position = "absolute";
+                            elmnt.style.top = docTop + "px";
+                            elmnt.style.left = docLeft + "px";
+                            elmnt.style.transform = "none";
+                        }
+
+                        startX = elmnt.offsetLeft;
+                        startY = elmnt.offsetTop;
+                        startMouseX = e.clientX;
+                        startMouseY = e.clientY;
+
+                        document.addEventListener("mousemove", onMove);
+                        document.addEventListener("mouseup", onUp);
+                    });
+
+                    function onMove(e) {
+                        e.preventDefault();
+                        var dx = e.clientX - startMouseX;
+                        var dy = e.clientY - startMouseY;
+                        elmnt.style.left = startX + dx + "px";
+                        elmnt.style.top = startY + dy + "px";
+                    }
+
+                    function onUp() {
+                        document.removeEventListener("mousemove", onMove);
+                        document.removeEventListener("mouseup", onUp);
+                    }
+                }
+
+                function openWindow(el) {
+                    if (!el) return;
+                    el.style.removeProperty("display");
+                    bringToFront(el);
+                    requestAnimationFrame(function () {
+                        el.style.removeProperty("top");
+                        el.style.removeProperty("left");
+                        el.style.removeProperty("right");
+                        el.style.removeProperty("bottom");
+                        el.style.removeProperty("position");
+                        el.style.removeProperty("transform");
+                    });
+                }
+
+                function closeWindow(el) {
+                    if (!el) return;
+                    el.style.display = "none";
+                }
+
+                if (blog) {
+                    makeDraggable(blog);
+                    blog.addEventListener("mousedown", function () { bringToFront(blog); });
+                }
+
+                // Wire header controls for Welcome and Blog windows
+                var welcomeMin = document.getElementById("welcomeminimize");
+                var welcomeFull = document.getElementById("welcomefullscreen");
+                var blogMin = document.getElementById("blogminimize");
+                var blogFull = document.getElementById("blogfullscreen");
+                var tutorialMin = document.getElementById("tutorialminimize");
+                var tutorialFull = document.getElementById("tutorialfullscreen");
+
+                if (welcomeMin) welcomeMin.addEventListener("click", function () {
+                    var w = document.getElementById("welcome");
+                    if (w) w.classList.add("window-minimized");
+                });
+                if (welcomeFull) welcomeFull.addEventListener("click", function () {
+                    var w = document.getElementById("welcome");
+                    if (w) {
+                        // Clear inline absolute positioning when entering fullscreen
+                        if (!w.classList.contains("window-fullscreen")) {
+                            w.style.removeProperty("top");
+                            w.style.removeProperty("left");
+                            w.style.removeProperty("right");
+                            w.style.removeProperty("bottom");
+                            w.style.removeProperty("position");
+                            w.style.removeProperty("transform");
+                        }
+                        w.classList.toggle("window-fullscreen");
+                        bringToFront(w);
+                    }
+                });
+
+                if (blogMin) blogMin.addEventListener("click", function () {
+                    var b = document.getElementById("blog");
+                    if (b) b.classList.add("window-minimized");
+                });
+                if (tutorialMin) tutorialMin.addEventListener("click", function () {
+                    var t = document.getElementById("tutorial");
+                    if (t) t.classList.add("window-minimized");
+                });
+                if (blogFull) blogFull.addEventListener("click", function () {
+                    var b = document.getElementById("blog");
+                    if (b) {
+                        if (!b.classList.contains("window-fullscreen")) {
+                            b.style.removeProperty("top");
+                            b.style.removeProperty("left");
+                            b.style.removeProperty("right");
+                            b.style.removeProperty("bottom");
+                            b.style.removeProperty("position");
+                            b.style.removeProperty("transform");
+                        }
+                        b.classList.toggle("window-fullscreen");
+                        bringToFront(b);
+                    }
+                });
+                if (tutorialFull) tutorialFull.addEventListener("click", function () {
+                    var t = document.getElementById("tutorial");
+                    if (t) {
+                        if (!t.classList.contains("window-fullscreen")) {
+                            t.style.removeProperty("top");
+                            t.style.removeProperty("left");
+                            t.style.removeProperty("right");
+                            t.style.removeProperty("bottom");
+                            t.style.removeProperty("position");
+                            t.style.removeProperty("transform");
+                        }
+                        t.classList.toggle("window-fullscreen");
+                        bringToFront(t);
+                    }
+                });
+
+                // Improve scroll behavior: keep scroll within blog panes
+                var blogContentEl = document.getElementById("blogContent");
+                var blogListEl = document.getElementById("blogList");
+                [blogContentEl, blogListEl].forEach(function (el) {
+                    if (!el) return;
+                    el.addEventListener("wheel", function (e) {
+                        // Stop scroll from bubbling to page
+                        e.stopPropagation();
+                    }, { passive: true });
+                });
+
+                // Default open sizing and focus for blog
+                if (blogOpen) blogOpen.addEventListener("click", function () {
+                    openWindow(blog);
+                    // Default to larger blog size on open using CSS variables (unless already fullscreen)
+                    if (blog && !blog.classList.contains("window-fullscreen")) {
+                        var rs = getComputedStyle(document.documentElement);
+                        var defW = (rs.getPropertyValue("--blog-default-width") || "").trim() || "min(960px, 90vw)";
+                        var defH = (rs.getPropertyValue("--blog-default-height") || "").trim() || "min(680px, calc(100vh - 120px))";
+                        blog.style.width = defW;
+                        blog.style.height = defH;
+                    }
+                    loadBlogList();
+                    // Focus content for keyboard scrolling
+                    setTimeout(function () {
+                        if (blogContentEl) blogContentEl.focus();
+                    }, 0);
+                });
+                if (blogClose) blogClose.addEventListener("click", function () { closeWindow(blog); });
+                // Open Tutorial.md, render its markdown with syntax highlighting
+                var tutorialContentEl = document.getElementById("tutorialContent");
+                var tutorialArticleEl = document.getElementById("tutorialArticle");
+                if (tutorialOpen) tutorialOpen.addEventListener("click", function () {
+                    openWindow(tutorial);
+                    fetch("blogs/Tutorial.md")
+                        .then(function (res) { return res.text(); })
+                        .then(function (md) {
+                            // Show plain Markdown as code (no rendering)
+                            var pre = document.createElement("pre");
+                            var code = document.createElement("code");
+                            code.className = "language-markdown";
+                            code.textContent = md;
+                            pre.appendChild(code);
+                            if (tutorialArticleEl) {
+                                tutorialArticleEl.innerHTML = "";
+                                tutorialArticleEl.appendChild(pre);
+                            }
+                            if (window.hljs && typeof window.hljs.highlightElement === "function") {
+                                window.hljs.highlightElement(code);
+                            }
+                            setTimeout(function () {
+                                if (tutorialContentEl && tutorialContentEl.focus) tutorialContentEl.focus();
+                            }, 0);
+                        })
+                        .catch(function (err) {
+                            tutorialArticleEl.textContent = "Failed to load Tutorial.md: " + err;
+                        });
+                });
+                if (tutorialClose) tutorialClose.addEventListener("click", function () { closeWindow(tutorial); });
+
+                // Blog markdown rendering using Marked + DOMPurify
+                // Configure marked for comprehensive GFM support and code highlighting
+                if (window.marked) {
+                    window.marked.setOptions({
+                        gfm: true,
+                        breaks: false,
+                        headerIds: true,
+                        mangle: false,
+                        smartLists: true,
+                        smartypants: false,
+                        highlight: function (code, lang) {
+                            try {
+                                if (window.hljs && lang && window.hljs.getLanguage(lang)) {
+                                    return window.hljs.highlight(code, { language: lang }).value;
+                                }
+                                if (window.hljs) {
+                                    return window.hljs.highlightAuto(code).value;
+                                }
+                            } catch (e) {}
+                            return code;
+                        }
+                    });
+                }
+                var blogListContainer = document.getElementById("blogListItems");
+                var blogStatus = document.getElementById("blogListStatus");
+                var blogArticle = document.getElementById("blogArticle");
+
+                function renderMarkdown(mdText) {
+                    if (window.DOMPurify && window.marked) {
+                        var html = window.marked.parse(mdText);
+                        blogArticle.innerHTML = window.DOMPurify.sanitize(html);
+                    } else if (window.marked) {
+                        blogArticle.innerHTML = window.marked.parse(mdText);
+                    } else {
+                        blogArticle.textContent = mdText;
+                    }
+                    if (window.hljs && typeof window.hljs.highlightAll === "function") {
+                        window.hljs.highlightAll();
+                    }
+                }
+
+                function loadBlogList() {
+                    if (!blogListContainer) return;
+                    blogListContainer.innerHTML = "";
+                    if (blogStatus) blogStatus.textContent = "Loading posts from /blogs/ ...";
+
+                    // Try to fetch directory listing (may require directory indexes enabled by the host)
+                    fetch("blogs/")
+                        .then(function (res) { return res.text(); })
+                        .then(function (htmlIndex) {
+                            // Parse links to .md files from the index HTML
+                            var re = /href="([^"]+\.md)"/gi;
+                            var files = [];
+                            var m;
+                            while ((m = re.exec(htmlIndex)) !== null) {
+                                var href = m[1];
+                                if (!href.toLowerCase().endsWith(".md")) continue;
+                                // Normalize path relative to blogs/
+                                var path = href.startsWith("http") ? href : ("blogs/" + href.replace(/^\/?blogs\//, ""));
+                                files.push(path);
+                            }
+
+                            // Sort by ISO timestamp prefix descending (newest first)
+                            files.sort(function (a, b) {
+                                var an = decodeURIComponent(a.split("/").pop());
+                                var bn = decodeURIComponent(b.split("/").pop());
+                                var adMatch = an.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?\+00:00)/);
+                                var bdMatch = bn.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?\+00:00)/);
+                                var ad = adMatch ? adMatch[1] : "";
+                                var bd = bdMatch ? bdMatch[1] : "";
+                                return ad < bd ? 1 : (ad > bd ? -1 : 0);
+                            });
+
+                            if (files.length === 0) {
+                                if (blogStatus) blogStatus.textContent = "No posts found. Ensure directory listing is enabled or open a post directly.";
+                                return;
+                            }
+
+                            if (blogStatus) blogStatus.textContent = "Select a post to read.";
+                            files.forEach(function (path) {
+                                var name = path.split("/").pop();
+                                var decodedName = decodeURIComponent(name);
+                                // Extract only the part after the ISO-8601 UTC timestamp prefix
+                                var titleMatch = decodedName.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?\+00:00\s+(.*)$/);
+                                var titleRaw = titleMatch ? titleMatch[1] : decodedName.replace(/^[^ ]+\s+/, "");
+                                var title = titleRaw.replace(/\.md$/i, "").replace(/_/g, " ").trim();
+                                var item = document.createElement("button");
+                                item.type = "button";
+                                item.style.cssText = "text-align:left;padding:6px 8px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:#fff;cursor:pointer;";
+                                item.textContent = title || decodedName;
+                                item.dataset.path = path;
+                                item.addEventListener("click", function () {
+                                    fetchAndRender(path);
+                                });
+                                blogListContainer.appendChild(item);
+                            });
+                        })
+                        .catch(function () {
+                            if (blogStatus) blogStatus.textContent = "Could not list /blogs/. You can still open posts directly.";
+                        });
+                }
+
+                function fetchAndRender(path) {
+                    if (blogStatus) blogStatus.textContent = "Loading " + path + " ...";
+                    fetch(path)
+                        .then(function (res) { return res.text(); })
+                        .then(function (md) {
+                            renderMarkdown(md);
+                            if (blogStatus) blogStatus.textContent = path;
+                        })
+                        .catch(function (err) {
+                            if (blogStatus) blogStatus.textContent = "Failed to load " + path;
+                            blogArticle.textContent = "Error: " + err;
+                        });
+                }
+
+                // Make windows resizable (blog and welcome)
+                function wireResizable(win) {
+                    if (!win) return;
+                    var handle = win.querySelector(".resize-handle");
+                    if (!handle || handle.dataset.wired === "true") return;
+                    handle.dataset.wired = "true";
+                    handle.addEventListener("mousedown", function (e) {
+                        e.preventDefault();
+                        bringToFront(win);
+                        var startX = e.clientX, startY = e.clientY;
+                        var startW = win.offsetWidth, startH = win.offsetHeight;
+                        var minW = 260, minH = 160;
+                        function onMove(ev) {
+                            var dx = ev.clientX - startX;
+                            var dy = ev.clientY - startY;
+                            var w = Math.max(minW, startW + dx);
+                            var h = Math.max(minH, startH + dy);
+                            win.style.width = w + "px";
+                            win.style.height = h + "px";
+                        }
+                        function onUp() {
+                            document.removeEventListener("mousemove", onMove);
+                            document.removeEventListener("mouseup", onUp);
+                        }
+                        document.addEventListener("mousemove", onMove);
+                        document.addEventListener("mouseup", onUp);
+                    });
+                }
+                // Wire resizers
+                wireResizable(document.getElementById("welcome"));
+                wireResizable(document.getElementById("blog"));
+                wireResizable(document.getElementById("tutorial"));
+            })();
+        </script>
+    </body>
+</html>
