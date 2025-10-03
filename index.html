@@ -408,31 +408,56 @@
                     blogListContainer.innerHTML = "";
                     if (blogStatus) blogStatus.textContent = "Loading posts from /blogs/ ...";
 
-                    // Try to fetch directory listing (may require directory indexes enabled by the host)
-                    fetch("blogs/")
-                        .then(function (res) { return res.text(); })
-                        .then(function (htmlIndex) {
-                            // Parse links to .md files from the index HTML
-                            var re = /href="([^"]+\.md)"/gi;
+                    // Try manifest first: blogs/index.json (recommended for GitHub Pages).
+                    // Expected formats:
+                    // - ["Post One.md", "Post Two.md"]
+                    // - [{ "name": "Post One.md" }, { "path": "Post Two.md" }, { "url": "https://example.com/Another.md" }]
+                    fetch("blogs/index.json", { cache: "no-store" })
+                        .then(function (res) {
+                            if (!res.ok) throw new Error("manifest missing");
+                            return res.json();
+                        })
+                        .then(function (list) {
                             var files = [];
-                            var m;
-                            while ((m = re.exec(htmlIndex)) !== null) {
-                                var href = m[1];
-                                if (!href.toLowerCase().endsWith(".md")) continue;
-                                // Normalize path relative to blogs/
-                                var path = href.startsWith("http") ? href : ("blogs/" + href.replace(/^\/?blogs\//, ""));
-                                files.push(path);
+                            if (Array.isArray(list)) {
+                                list.forEach(function (entry) {
+                                    if (typeof entry === "string") {
+                                        files.push("blogs/" + entry.replace(/^\/?blogs\//, ""));
+                                    } else if (entry && typeof entry === "object") {
+                                        var p = entry.path || entry.url || entry.name || "";
+                                        if (p) files.push(p.startsWith("http") ? p : ("blogs/" + p.replace(/^\/?blogs\//, "")));
+                                    }
+                                });
                             }
-
+                            return files;
+                        })
+                        .catch(function () {
+                            // Fallback to directory listing (works locally, usually disabled on GitHub Pages)
+                            return fetch("blogs/")
+                                .then(function (res) { return res.text(); })
+                                .then(function (htmlIndex) {
+                                    var re = /href="([^"]+\.md)"/gi;
+                                    var files = [];
+                                    var m;
+                                    while ((m = re.exec(htmlIndex)) !== null) {
+                                        var href = m[1];
+                                        if (!href.toLowerCase().endsWith(".md")) continue;
+                                        var path = href.startsWith("http") ? href : ("blogs/" + href.replace(/^\/?blogs\//, ""));
+                                        files.push(path);
+                                    }
+                                    return files;
+                                });
+                        })
+                        .then(function (files) {
                             // Sort alphabetically by filename (case-insensitive)
-                                                        files.sort(function (a, b) {
-                                                            var an = decodeURIComponent(a.split("/").pop()).toLowerCase();
-                                                            var bn = decodeURIComponent(b.split("/").pop()).toLowerCase();
-                                                            return an.localeCompare(bn);
-                                                        });
+                            files.sort(function (a, b) {
+                                var an = decodeURIComponent(a.split("/").pop()).toLowerCase();
+                                var bn = decodeURIComponent(b.split("/").pop()).toLowerCase();
+                                return an.localeCompare(bn);
+                            });
 
                             if (files.length === 0) {
-                                if (blogStatus) blogStatus.textContent = "No posts found. Ensure directory listing is enabled or open a post directly.";
+                                if (blogStatus) blogStatus.textContent = "No posts found. Add blogs/index.json or enable directory listing.";
                                 return;
                             }
 
@@ -440,12 +465,11 @@
                             files.forEach(function (path) {
                                 var name = path.split("/").pop();
                                 var decodedName = decodeURIComponent(name);
-                                // Show only the filename (no directory), ignoring timestamps entirely
                                 var title = decodedName.replace(/\.md$/i, "").trim();
                                 var item = document.createElement("button");
                                 item.type = "button";
                                 item.style.cssText = "text-align:left;padding:6px 8px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:#fff;cursor:pointer;";
-                                item.textContent = title || decodedName;
+                                item.textContent = title;
                                 item.dataset.path = path;
                                 item.addEventListener("click", function () {
                                     fetchAndRender(path);
@@ -454,7 +478,7 @@
                             });
                         })
                         .catch(function () {
-                            if (blogStatus) blogStatus.textContent = "Could not list /blogs/. You can still open posts directly.";
+                            if (blogStatus) blogStatus.textContent = "Could not load blog list. Add blogs/index.json.";
                         });
                 }
 
