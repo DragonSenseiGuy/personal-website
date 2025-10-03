@@ -1,0 +1,3 @@
+# This file disables Jekyll processing on GitHub Pages.
+# Presence of `.nojekyll` ensures GitHub Pages serves files as-is without Jekyll.
+# Useful when filenames resemble dates or contain characters Jekyll interprets.
